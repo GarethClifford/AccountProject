@@ -24,11 +24,9 @@ public class Account {
 	}
 
 	public Account(String accountNumber, String fName, String lName) {
-
 		firstName = fName;
 		lastName = lName;
 		this.accountNumber = accountNumber;
-
 	}
 
 
@@ -55,6 +53,9 @@ public class Account {
 
 	public String getAccountNumber() {
 		return accountNumber;
+	}
+	public Long getIDNumber() {
+		return this.ID;
 	}
 
 	public String getName() {

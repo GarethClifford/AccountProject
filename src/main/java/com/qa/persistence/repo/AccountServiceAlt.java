@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import com.qa.persistence.domain.Account;
@@ -13,23 +14,30 @@ import com.qa.util.JSONUtil;
 
 @Transactional(SUPPORTS)
 @Alternative
-public class AccountServiceAlt {
+public class AccountServiceAlt implements IConnect{
 	private JSONUtil util;
 	HashMap<Long, Account> accountMap = new HashMap<Long, Account>();
-
-	public Collection<Account> getAllAccounts() {
-		return accountMap.values();
+	
+	public String getAllAccounts() {
+		return accountMap.values().toString();
 	} 
 	
 	public Account findAnAccount(Long id) {
 		return accountMap.get(id);
 	}
-
+	
+	@Inject
+	IdChecker br;
+	
 	@Transactional(REQUIRED)
 	public String createAnAccount(String acc) {
 		Account account = util.getObjectforJSON(acc, Account.class);
-		accountMap.put(account.getIDNumber(), account);
-		return "{\"message\": \"account sucessfully added\"}";
+		if(br.checkIDNumber(account)) {
+			accountMap.put(account.getIDNumber(), account);
+			return "{\"message\": \"account sucessfully added\"}";
+		}
+			return "{\"message\": \"This account has been blocked\"}";
+		
 	}
 	
 	@Transactional(REQUIRED)

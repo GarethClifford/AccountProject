@@ -1,18 +1,18 @@
 package com.qa.persistence.repo;
 
-import java.util.List;
 import static javax.transaction.Transactional.TxType.*;
 
+import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.qa.persistence.domain.Account;
 import com.qa.util.JSONUtil;
 
 @Transactional(SUPPORTS)
+@Default
 public class AccountServiceDBImpl {
 	@PersistenceContext(unitName = "primary") 
 	private EntityManager em;
@@ -27,8 +27,9 @@ public class AccountServiceDBImpl {
 	}
 	
 	@Transactional(REQUIRED)
-	public String createAnAccount(Account acc) {
-		em.persist(acc);
+	public String createAnAccount(String acc) {
+		Account account = util.getObjectforJSON(acc, Account.class);
+		em.persist(account);
 		return "{\"message\": \"account sucessfully added\"}";
 	}
 	

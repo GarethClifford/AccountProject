@@ -17,12 +17,13 @@ import com.qa.util.JSONUtil;
 public class AccountServiceDBImpl implements IConnect {
 	@PersistenceContext(unitName = "primary") 
 	private EntityManager em;
+	@Inject
 	private JSONUtil util;
 	
 
 	@Override
 	public String getAllAccounts() {
-		TypedQuery<Account> query = em.createQuery("SELECT a FROM ACCOUNT a", Account.class);		
+		TypedQuery<Account> query = em.createQuery("SELECT a FROM Account a", Account.class);		
 		return util.getJSONForObject(query.getResultList());
 	}
 
@@ -48,12 +49,13 @@ public class AccountServiceDBImpl implements IConnect {
 
 	@Override
 	@Transactional(REQUIRED)
-	public String updateAnAccount(Account account, Long id) {
+	public String updateAnAccount(String account, Long id) {
+		Account newDetials = util.getObjectforJSON(account, Account.class);
 		Account oldDetails = em.find(Account.class, id);
 		
-		oldDetails.setFirstName(account.getFirstName());
-		oldDetails.setLastName(account.getLastName());
-		oldDetails.setAccountNumber(account.getAccountNumber());
+		oldDetails.setFirstName(newDetials.getFirstName());
+		oldDetails.setLastName(newDetials.getLastName());
+		oldDetails.setAccountNumber(newDetials.getAccountNumber());
 		
 		return "{\"message\": \"account sucessfully updated\"}";
 	}
@@ -61,8 +63,7 @@ public class AccountServiceDBImpl implements IConnect {
 	@Override
 	@Transactional(REQUIRED)
 	public String deleteAccount(Long id) {
-		em.remove(id);
-		
+		em.remove(findAnAccount(id));
 		return "{\"message\": \"account sucessfully removed\"}";
 	}
 

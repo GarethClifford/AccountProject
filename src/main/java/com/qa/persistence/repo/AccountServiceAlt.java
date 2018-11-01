@@ -6,13 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.enterprise.inject.Alternative;
+import javax.faces.bean.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import com.qa.persistence.domain.Account;
 import com.qa.util.JSONUtil;
 
-@Transactional(SUPPORTS)
+@ApplicationScoped
 @Alternative
 public class AccountServiceAlt implements IConnect{
 	private JSONUtil util;

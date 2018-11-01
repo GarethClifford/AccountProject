@@ -3,45 +3,45 @@ package com.qa.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qa.persistence.domain.Account;
+import com.qa.persistence.repo.IConnect;
 
-public class AccountService {
+public class AccountService implements IAccountService {
 
-	private Map<String, Account> accountMap = new HashMap<String, Account>();
+	@Inject
+	private IConnect connect;
 
-	private ObjectMapper factory = new ObjectMapper();
 
-	public Account getAccount(String accountNum) {
-
-		return accountMap.get(accountNum);
+	@Override
+	public Account findAnAccount(Long accountNum) {
+		return connect.findAnAccount(accountNum);
 	}
 
-
-
-	public String createAccount(String accountNum, String fName, String lName) {
-
-		Account newAccount = new Account(accountNum, fName, lName);
-
-		accountMap.put(accountNum, newAccount);
-
-		return "Account Created";
+	@Override
+	public String createAnAccount(String account) {
+		return connect.createAnAccount(account);
 	}
-
-	public String printTables() throws JsonProcessingException {
-
-
-		System.out.println(factory.writeValueAsString(accountMap.values()));
-
-		return "Printing tables";
-	}
-
-	public int getAccountSum(String fName) {
-
-		return (int) accountMap.values().stream().filter(i -> i.getFirstName().equals(fName)).count();
-	}
-
 	
+	@Override
+	public String getAllAccounts() {
+		return connect.getAllAccounts();
+				
+	}
+	
+	@Override
+	public String deleteAnAccount(Long id) {
+		return connect.deleteAccount(id);
+				
+	}
+	
+	@Override
+	public String updateAnAccount(Long id, String acc) {
+		return connect.updateAnAccount(acc, id);
+				
+	}
 	
 }

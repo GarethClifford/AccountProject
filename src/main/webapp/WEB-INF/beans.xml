@@ -6,7 +6,7 @@
 
 <beans bean-discovery-mode="all" xsi:schemaLocation=" http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
 
-<alternatives> <class>com.qa.persistence.repo</class> </alternatives>
+<!-- <alternatives> <class>com.qa.persistence.repo</class> </alternatives> -->
 
 
 </beans>

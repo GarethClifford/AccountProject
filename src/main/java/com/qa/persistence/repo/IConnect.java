@@ -10,7 +10,7 @@ public interface IConnect {
 
 	String createAnAccount(String acc);
 
-	String updateAnAccount(Account account, Long id);
+	String updateAnAccount(String account, Long id);
 
 	String deleteAccount(Long id);
 
